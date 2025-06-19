@@ -13,7 +13,10 @@ import datetime
 
 import torch
 import torch.distributed as dist
-from torch import nn, einsum
+from torch import nn
+from torch.utils.data import Dataset
+from torchvision import transforms
+
 
 class SmoothedValue(object):
     """Track a series of values and provide access to smoothed values over a
@@ -279,3 +282,21 @@ def merge_pre_bn(module, pre_bn_1, pre_bn_2=None):
 
     module.weight.data = weight
     module.bias.data = bias
+
+class SubclassDataset(Dataset):
+    def __init__(self, original_dataset, class_range=range(500)):
+        self.dataset = original_dataset
+        self.class_range = set(class_range)
+
+        # Filter indices where the target is in desired class range
+        self.filtered_indices = [
+            idx for idx, (_, label) in enumerate(self.dataset)
+            if label in self.class_range
+        ]
+
+    def __len__(self):
+        return len(self.filtered_indices)
+
+    def __getitem__(self, idx):
+        real_idx = self.filtered_indices[idx]
+        return self.dataset[real_idx]

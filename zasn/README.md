@@ -9,8 +9,15 @@ Projekt został zrealizowany przez Dominika Słodkowskiego i Dominikę Milewską
 projektu na przedmiot Zaawansowane Architektury Sieci Neuronowych.
 
 ## Sposób korzystania
-Kod treningu znajduje się w pliku train.py, który powinien być uruchamiany z wiersza poleceń z podaniem
-ścieżki do katalogu z obrazami (w naszym wypadku podzbiór ImageNetu).
+W pierwszej kolejności trenujemy autoenkoder. Służy do tego skrypt train_mae.py. 
+Skrypt powinien być uruchamiany z wiersza poleceń z obowiązkowym podaniem
+ścieżki do katalogu z obrazami (w naszym wypadku podzbiór ImageNetu). W wyniku otrzymamy katalog z ostanim
+najlepszym checkpointem oraz plik .txt z logami treningu.
+
+Następnie prowadzimy finetuning modelu Hiera Tiny przy użyciu uzyskanego wcześniej checkpointu jako 
+punktu startowego. Robimy to przy użyciu skryptu train_finetune.py, wywoływanego z wiersza poleceń
+obowiązkowo z podaniem ścieżki do katalogu z obrazami i ścieżki do checkpointu. W wyniku otrzymamy katalog z ostanim
+najlepszym checkpointem oraz plik .txt z logami treningu.
 
 Kod ewaluacji znajduje się w pliku eval.py, który powinien być analogicznie wywoływany z wiersza poleceń.
 
